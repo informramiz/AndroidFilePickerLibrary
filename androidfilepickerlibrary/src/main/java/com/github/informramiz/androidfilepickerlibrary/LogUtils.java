@@ -5,7 +5,7 @@ import android.util.Log;
 /**
  * Created by ramiz on 20/04/2018
  */
-public class LogUtils {
+class LogUtils {
 
     public static void v(String tag, String msg) {
         if (BuildConfig.DEBUG) {
