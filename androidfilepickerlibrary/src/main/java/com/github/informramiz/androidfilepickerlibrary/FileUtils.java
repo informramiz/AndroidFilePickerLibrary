@@ -1,8 +1,10 @@
 package com.github.informramiz.androidfilepickerlibrary;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.net.Uri;
@@ -10,16 +12,26 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.FileProvider;
 import android.util.Base64;
 import android.webkit.MimeTypeMap;
+
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URLConnection;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by ramiz on 20/04/2018
@@ -27,6 +39,32 @@ import java.io.InputStreamReader;
  */
 
 public class FileUtils {
+    /** TAG for log messages. */
+    private static final String TAG = "FileUtils";
+    private static final boolean DEBUG = false; // Set to true to enable logging
+
+    public static final String MIME_TYPE_AUDIO = "audio/*";
+    public static final String MIME_TYPE_TEXT = "text/*";
+    public static final String MIME_TYPE_APK = "apk/*";
+    public static final String MIME_TYPE_IMAGE = "image/*";
+    public static final String MIME_TYPE_VIDEO = "video/*";
+    public static final String MIME_TYPE_APP = "application/*";
+    public static final String MIME_TYPE_PDF = "application/pdf";
+    public static final String MIME_TYPE_PPT = "application/ppt";
+    public static final String MIME_TYPE_DOC = "application/doc";
+    public static final String MIME_TYPE_XLS = "application/xls";
+    public static final String DATE_FORMAT = "yyyyMMdd_HHmmss";
+    public static final String FILES_PREFIX = "filePicker_";
+    public static final String MEDIA_FOLDER = "pickerMedia";
+    public static final String IMAGE_EXTENSION = ".jpg";
+    public static final String VIDEO_EXTENSION = ".mp4";
+
+    //Doc file extensions
+    public static final String[] DOC_FILE_EXTENTSIONS = {"pdf", "doc", "ppt", "xls", "txt"};
+    public static final String[] AUDIO_FILE_EXTENTSIONS = {"mp3"};
+
+    public static final String HIDDEN_PREFIX = ".";
+
     public static String encodeFileToBase64Binary(File file) {
         String encodedFile = null;
         try {
@@ -90,23 +128,6 @@ public class FileUtils {
         return null;
     }
 
-    /** TAG for log messages. */
-    static final String TAG = "FileUtils";
-    private static final boolean DEBUG = false; // Set to true to enable logging
-
-    public static final String MIME_TYPE_AUDIO = "audio/*";
-    public static final String MIME_TYPE_TEXT = "text/*";
-    public static final String MIME_TYPE_APK = "apk/*";
-    public static final String MIME_TYPE_IMAGE = "image/*";
-    public static final String MIME_TYPE_VIDEO = "video/*";
-    public static final String MIME_TYPE_APP = "application/*";
-    public static final String MIME_TYPE_PDF = "application/pdf";
-    public static final String MIME_TYPE_PPT = "application/ppt";
-    public static final String MIME_TYPE_DOC = "application/doc";
-    public static final String MIME_TYPE_XLS = "application/xls";
-
-    public static final String HIDDEN_PREFIX = ".";
-
     /**
      * Gets the extension of a file name, like ".png" or ".jpg".
      *
@@ -128,7 +149,7 @@ public class FileUtils {
         }
     }
 
-    public static String getExentsionFromMimeType(String mimeType) {
+    public static String getExtensionFromMimeType(String mimeType) {
         return MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
     }
 
@@ -442,5 +463,163 @@ public class FileUtils {
             return true;
         }
         return false;
+    }
+
+    public static boolean isDocFile(@NonNull String extension, @Nullable String mimeType) {
+        if (isImageAttachment(extension, mimeType)
+                || isVideoAttachment(extension, mimeType)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public static boolean isDocFile(@NonNull String fileName) {
+        return FilenameUtils.isExtension(fileName, DOC_FILE_EXTENTSIONS);
+    }
+
+    public static boolean isDocFile(@NonNull Attach attach) {
+        return isDocFile(attach.getName());
+    }
+
+    public static boolean isAudioFile(@NonNull String fileName) {
+        return FilenameUtils.isExtension(fileName, AUDIO_FILE_EXTENTSIONS);
+    }
+
+    public static boolean isAudioFile(@NonNull Attach attach) {
+        return isAudioFile(attach.getName()) || attach.getType().contains("audio");
+    }
+
+    public static boolean isImageAttachment(@NonNull String extension, @Nullable String mimeType) {
+        if (mimeType == null) {
+            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        }
+
+        return mimeType != null && mimeType.startsWith("image");
+    }
+
+    public static boolean isVideoAttachment(@NonNull String extension, @Nullable String mimeType) {
+        if (mimeType == null) {
+            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        }
+
+        return mimeType != null && mimeType.startsWith("video");
+    }
+
+    public static boolean isImageFile(String path) {
+        String mimeType = URLConnection.guessContentTypeFromName(path);
+        return mimeType != null && mimeType.startsWith("image");
+
+    }
+
+    public static String getFileExtension(String path) {
+        return FilenameUtils.getExtension(path);
+    }
+
+    public static boolean isVideoFile(String path) {
+        String mimeType = URLConnection.guessContentTypeFromName(path);
+        return mimeType != null && mimeType.startsWith("video");
+    }
+
+    public static String getFileType(File file) {
+        String mimeType = null;
+        String extension = FilenameUtils.getExtension(file.getAbsolutePath());
+        if (extension != null) {
+            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        }
+
+        String type = "image";
+        if (mimeType != null) {
+            if (mimeType.contains("image")) {
+                type = "image";
+            } else if (mimeType.contains("video")) {
+                type = "video";
+            } else {
+                type = "application";
+            }
+        }
+        return type;
+
+    }
+
+    @Nullable
+    static File createImageFile() {
+        // Create an image file name
+        String fileNamePrefix = getFileNamePrefix();
+        File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/" + MEDIA_FOLDER);
+        boolean isDirectoryPresent = true;
+        if (!storageDir.exists()) {
+            try {
+                isDirectoryPresent = storageDir.mkdir();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (!isDirectoryPresent) {
+            return null;
+        }
+
+        File imageFile = null;
+        try {
+            imageFile = File.createTempFile(
+                    fileNamePrefix,  /* prefix */
+                    IMAGE_EXTENSION,         /* suffix */
+                    storageDir      /* directory */
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return imageFile;
+    }
+
+    static File createVideoFile() {
+        String fileNamePrefix = getFileNamePrefix();
+        File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/" + MEDIA_FOLDER);
+        boolean isDirectoryPresent = true;
+        if (!storageDir.exists()) {
+            isDirectoryPresent = storageDir.mkdir();
+        }
+        if (!isDirectoryPresent) {
+            return null;
+        }
+
+        File videoFile = null;
+        try {
+            videoFile = File.createTempFile(
+                    fileNamePrefix,  /* prefix */
+                    VIDEO_EXTENSION,         /* suffix */
+                    storageDir      /* directory */
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return videoFile;
+    }
+
+    @NonNull
+    private static String getFileNamePrefix() {
+        String timeStamp = new SimpleDateFormat(DATE_FORMAT, Locale.US).format(new Date());
+        return FILES_PREFIX + timeStamp + "_";
+    }
+
+    public static void addFileToGallery(@NonNull Activity activity, String filePath) {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File file = new File(filePath);
+        Uri contentUri = FileProvider.getUriForFile(activity,
+                BuildConfig.FILES_AUTHORITY,
+                file);
+        mediaScanIntent.setData(contentUri);
+        mediaScanIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        activity.getApplicationContext().sendBroadcast(mediaScanIntent);
+    }
+
+    public static void addFileToGallery(@NonNull Activity activity, Uri contentUri) {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        mediaScanIntent.setData(contentUri);
+        mediaScanIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        activity.getApplicationContext().sendBroadcast(mediaScanIntent);
     }
 }
