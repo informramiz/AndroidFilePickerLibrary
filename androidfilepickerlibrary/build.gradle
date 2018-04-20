@@ -13,6 +13,9 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+        def filesAuthorityValue = applicationId + ".com.github.informramiz.androidfilepickerlibrary" + ".fileprovider"
+        manifestPlaceholders = [filesAuthority: filesAuthorityValue]
+        buildConfigField "String", "FILES_AUTHORITY", "\"${filesAuthorityValue}\""
     }
 
     buildTypes {
