@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.github.informramiz.androidfilepickerlibrary">
     <application>
+        <activity android:name=".AttachmentPickerActivity"/>
         <provider
             android:name="com.github.informramiz.androidfilepickerlibrary.FilePickerCustomFileProvider"
             android:authorities="${filesAuthority}"
