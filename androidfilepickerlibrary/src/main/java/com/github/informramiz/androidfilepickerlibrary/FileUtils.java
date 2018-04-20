@@ -431,49 +431,11 @@ public class FileUtils {
         return null;
     }
 
-    /**
-     * Get the file size in a human-readable string.
-     *
-     * @param size
-     * @return
-     */
-    public static String getReadableFileSize(int size) {
-        final int BYTES_IN_KILOBYTES = 1024;
-        final DecimalFormat dec = new DecimalFormat("###.#");
-        final String KILOBYTES = " KB";
-        final String MEGABYTES = " MB";
-        final String GIGABYTES = " GB";
-        float fileSize = 0;
-        String suffix = KILOBYTES;
-
-        if (size > BYTES_IN_KILOBYTES) {
-            fileSize = size / BYTES_IN_KILOBYTES;
-            if (fileSize > BYTES_IN_KILOBYTES) {
-                fileSize = fileSize / BYTES_IN_KILOBYTES;
-                if (fileSize > BYTES_IN_KILOBYTES) {
-                    fileSize = fileSize / BYTES_IN_KILOBYTES;
-                    suffix = GIGABYTES;
-                } else {
-                    suffix = MEGABYTES;
-                }
-            }
+    public static boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
         }
-        return String.valueOf(dec.format(fileSize) + suffix);
-    }
-
-    /**
-     * Get the Intent for selecting content to be used in an Intent Chooser.
-     *
-     * @return The intent for opening a file with Intent.createChooser()
-     *
-     */
-    public static Intent createGetContentIntent() {
-        // Implicitly allow the user to select a particular kind of data
-        final Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        // The MIME data type filter
-        intent.setType("*/*");
-        // Only return URIs that can be opened with ContentResolver
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        return intent;
+        return false;
     }
 }
