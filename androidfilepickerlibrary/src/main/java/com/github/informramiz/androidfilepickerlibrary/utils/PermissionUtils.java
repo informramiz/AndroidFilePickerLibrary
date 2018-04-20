@@ -21,8 +21,8 @@ public class PermissionUtils {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
-    public static boolean checkStoragePermissions(@NonNull Activity activity) {
-        return areAllPermissionsGranted(activity, ATTACHMENT_PERMISSIONS);
+    public static boolean checkStoragePermissions(@NonNull Context context) {
+        return areAllPermissionsGranted(context, ATTACHMENT_PERMISSIONS);
     }
 
     public static void requestStoragePermissions(@NonNull Activity activity, final int requestCode) {

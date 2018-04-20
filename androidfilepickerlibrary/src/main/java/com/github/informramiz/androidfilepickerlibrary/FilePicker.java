@@ -13,6 +13,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 
 import com.github.informramiz.androidfilepickerlibrary.utils.FileUtils;
+import com.github.informramiz.androidfilepickerlibrary.utils.PermissionUtils;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -228,7 +229,9 @@ public class FilePicker {
                 , null, null);
 
         Attach attach = new Attach();
-        attach.setPath(FileUtils.getPath(context, uri));
+        if (PermissionUtils.checkStoragePermissions(context)) {
+            attach.setPath(FileUtils.getPath(context, uri));
+        }
         attach.setUri(uri);
         try {
             if (cursor != null && cursor.moveToFirst()) {
