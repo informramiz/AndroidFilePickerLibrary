@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.github.informramiz.androidfilepickerlibrary.Attach;
 import com.github.informramiz.androidfilepickerlibrary.FilePicker;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         uriTextView.setText("Uri: " + attach.getUri().toString());
         if (attach.isImage()) {
             imageView.setVisibility(View.VISIBLE);
-            imageView.setImageURI(attach.getUri());
+            Picasso.get().load(attach.getUri()).into(imageView);
         } else {
             imageView.setVisibility(View.GONE);
         }

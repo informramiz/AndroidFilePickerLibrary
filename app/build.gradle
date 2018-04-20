@@ -29,4 +29,5 @@ dependencies {
     implementation project(':androidfilepickerlibrary')
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }
