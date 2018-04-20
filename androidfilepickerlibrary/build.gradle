@@ -6,6 +6,7 @@ android {
 
 
     defaultConfig {
+        applicationId
         minSdkVersion 16
         targetSdkVersion 27
         versionCode versionCode
@@ -13,7 +14,7 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        def filesAuthorityValue = applicationId + ".com.github.informramiz.androidfilepickerlibrary" + ".fileprovider"
+        def filesAuthorityValue = applicationId + "com.github.informramiz.androidfilepickerlibrary.fileprovider"
         manifestPlaceholders = [filesAuthority: filesAuthorityValue]
         buildConfigField "String", "FILES_AUTHORITY", "\"${filesAuthorityValue}\""
     }

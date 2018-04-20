@@ -3,6 +3,8 @@ package com.github.informramiz.androidfilepickerlibrary;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -19,6 +22,7 @@ import com.github.informramiz.androidfilepickerlibrary.utils.LogUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import droidninja.filepicker.FilePickerBuilder;
 import droidninja.filepicker.FilePickerConst;
@@ -127,9 +131,17 @@ public class AttachmentPickerActivity extends AppCompatActivity {
                 BuildConfig.FILES_AUTHORITY,
                 file);
 
+        recordVideoIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        if (!isApiLollipopOrAbove()) {
+            //there are some issues on Pre-Lollipop devices with granting uri permissions
+            //so we have to use following method
+            List<ResolveInfo> resolveInfoList = getPackageManager().queryIntentActivities(recordVideoIntent, PackageManager.MATCH_DEFAULT_ONLY);
+            for (ResolveInfo resolveInfo : resolveInfoList) {
+                grantUriPermission(resolveInfo.activityInfo.packageName, contentUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
+        }
         recordVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                 contentUri);
-        recordVideoIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         this.startActivityForResult(recordVideoIntent, REQ_CODE_CAPTURE_VIDEO);
 
         Attach attach = FilePicker.convertFileToAttachment(file);
@@ -156,9 +168,17 @@ public class AttachmentPickerActivity extends AppCompatActivity {
                 BuildConfig.FILES_AUTHORITY,
                 photoFile);
 
+        takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        if (!isApiLollipopOrAbove()) {
+            //there are some issues on Pre-Lollipop devices with granting uri permissions
+            //so we have to use following method
+            List<ResolveInfo> resolveInfoList = getPackageManager().queryIntentActivities(takePictureIntent, PackageManager.MATCH_DEFAULT_ONLY);
+            for (ResolveInfo resolveInfo : resolveInfoList) {
+                grantUriPermission(resolveInfo.activityInfo.packageName, contentUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
+        }
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                 contentUri);
-        takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         this.startActivityForResult(takePictureIntent, REQ_CODE_CAPTURE_IMAGE);
 
         Attach attach = FilePicker.convertFileToAttachment(photoFile);
