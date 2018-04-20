@@ -1,4 +1,4 @@
-package com.github.informramiz.androidfilepickerlibrary;
+package com.github.informramiz.androidfilepickerlibrary.utils;
 
 import android.Manifest;
 import android.app.Activity;

@@ -1,4 +1,4 @@
-package com.github.informramiz.androidfilepickerlibrary;
+package com.github.informramiz.androidfilepickerlibrary.utils;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -18,6 +18,9 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
 import android.util.Base64;
 import android.webkit.MimeTypeMap;
+
+import com.github.informramiz.androidfilepickerlibrary.Attach;
+import com.github.informramiz.androidfilepickerlibrary.BuildConfig;
 
 import org.apache.commons.io.FilenameUtils;
 

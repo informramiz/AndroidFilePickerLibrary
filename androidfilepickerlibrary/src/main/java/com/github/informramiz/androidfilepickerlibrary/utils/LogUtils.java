@@ -1,11 +1,13 @@
-package com.github.informramiz.androidfilepickerlibrary;
+package com.github.informramiz.androidfilepickerlibrary.utils;
 
 import android.util.Log;
+
+import com.github.informramiz.androidfilepickerlibrary.BuildConfig;
 
 /**
  * Created by ramiz on 20/04/2018
  */
-class LogUtils {
+public class LogUtils {
 
     public static void v(String tag, String msg) {
         if (BuildConfig.DEBUG) {

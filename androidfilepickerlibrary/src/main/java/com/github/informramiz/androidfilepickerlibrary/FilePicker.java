@@ -12,6 +12,8 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 
+import com.github.informramiz.androidfilepickerlibrary.utils.FileUtils;
+
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;

@@ -5,7 +5,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
-import java.io.File;
+import com.github.informramiz.androidfilepickerlibrary.utils.FileUtils;
+
 import java.util.Locale;
 
 /**
