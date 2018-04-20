@@ -546,7 +546,7 @@ public class FileUtils {
     }
 
     @Nullable
-    static File createImageFile() {
+    public static File createImageFile() {
         // Create an image file name
         String fileNamePrefix = getFileNamePrefix();
         File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/" + MEDIA_FOLDER);
@@ -577,7 +577,7 @@ public class FileUtils {
         return imageFile;
     }
 
-    static File createVideoFile() {
+    public static File createVideoFile() {
         String fileNamePrefix = getFileNamePrefix();
         File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/" + MEDIA_FOLDER);
         boolean isDirectoryPresent = true;

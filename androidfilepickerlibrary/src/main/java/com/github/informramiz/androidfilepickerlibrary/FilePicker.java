@@ -84,15 +84,15 @@ public class FilePicker {
         }
     }
 
-    private void showCameraPickerDialog(@NonNull Activity activity) {
+    public static void showCameraPickerDialog(@NonNull Activity activity) {
         showCameraPickerDialog((Object)activity);
     }
 
-    private void showCameraPickerDialog(@NonNull Fragment fragment) {
+    public static void showCameraPickerDialog(@NonNull Fragment fragment) {
         showCameraPickerDialog((Object)fragment);
     }
 
-    private void showCameraPickerDialog(@NonNull Object object) {
+    private static void showCameraPickerDialog(@NonNull Object object) {
         Fragment fragment = null;
         Activity activity = null;
         if (object instanceof Fragment) {
