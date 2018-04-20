@@ -546,10 +546,10 @@ public class FileUtils {
     }
 
     @Nullable
-    public static File createImageFile() {
+    public static File createImageFile(@NonNull Context context) {
         // Create an image file name
         String fileNamePrefix = getFileNamePrefix();
-        File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/" + MEDIA_FOLDER);
+        File storageDir = new File(context.getFilesDir() + "/" + MEDIA_FOLDER);
         boolean isDirectoryPresent = true;
         if (!storageDir.exists()) {
             try {
@@ -577,9 +577,9 @@ public class FileUtils {
         return imageFile;
     }
 
-    public static File createVideoFile() {
+    public static File createVideoFile(@NonNull Context context) {
         String fileNamePrefix = getFileNamePrefix();
-        File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/" + MEDIA_FOLDER);
+        File storageDir = new File(context.getFilesDir() + "/" + MEDIA_FOLDER);
         boolean isDirectoryPresent = true;
         if (!storageDir.exists()) {
             isDirectoryPresent = storageDir.mkdir();

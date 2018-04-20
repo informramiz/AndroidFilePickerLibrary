@@ -103,34 +103,34 @@ public class AttachmentPickerActivity extends AppCompatActivity {
     private void handleCameraAttachment() {
         int captureType = getIntent().getIntExtra(EXTRA_CAPTURE_TYPE, CAPTURE_TYPE_IMAGE);
         if (captureType == CAPTURE_TYPE_VIDEO) {
-            captureFromCameraAttachment = launchCameraVideoIntent(this);
+            captureFromCameraAttachment = launchCameraVideoIntent();
         } else {
-            captureFromCameraAttachment = launchCameraImageIntent(this);
+            captureFromCameraAttachment = launchCameraImageIntent();
         }
     }
 
-    private Attach launchCameraVideoIntent(@NonNull Activity activity) {
+    private Attach launchCameraVideoIntent() {
         Intent recordVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        if (recordVideoIntent.resolveActivity(activity.getPackageManager()) == null) {
-            CommonUtils.showFeatureNotSupportedToast(activity);
+        if (recordVideoIntent.resolveActivity(this.getPackageManager()) == null) {
+            CommonUtils.showFeatureNotSupportedToast(this);
             return null;
         }
 
-        File file = FileUtils.createVideoFile();
+        File file = FileUtils.createVideoFile(this);
         // Continue only if the File was successfully created
         if (file == null) {
-            CommonUtils.showMessageSafe(activity, R.string.error_msg_file_creation_failed);
+            CommonUtils.showMessageSafe(this, R.string.error_msg_file_creation_failed);
             return null;
         }
 
-        Uri contentUri = FilePickerCustomFileProvider.getUriForFile(activity,
+        Uri contentUri = FilePickerCustomFileProvider.getUriForFile(this,
                 BuildConfig.FILES_AUTHORITY,
                 file);
 
         recordVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                 contentUri);
         recordVideoIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        activity.startActivityForResult(recordVideoIntent, REQ_CODE_CAPTURE_VIDEO);
+        this.startActivityForResult(recordVideoIntent, REQ_CODE_CAPTURE_VIDEO);
 
         Attach attach = FilePicker.convertFileToAttachment(file);
         attach.setUri(contentUri);
@@ -138,28 +138,28 @@ public class AttachmentPickerActivity extends AppCompatActivity {
     }
 
     @Nullable
-    private Attach launchCameraImageIntent(@NonNull Activity activity) {
+    private Attach launchCameraImageIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(activity.getPackageManager()) == null) {
-            CommonUtils.showFeatureNotSupportedToast(activity);
+        if (takePictureIntent.resolveActivity(this.getPackageManager()) == null) {
+            CommonUtils.showFeatureNotSupportedToast(this);
             return null;
         }
 
-        File photoFile = FileUtils.createImageFile();
+        File photoFile = FileUtils.createImageFile(this);
         // Continue only if the File was successfully created
         if (photoFile == null) {
-            CommonUtils.showMessageSafe(activity, R.string.error_msg_file_creation_failed);
+            CommonUtils.showMessageSafe(this, R.string.error_msg_file_creation_failed);
             return null;
         }
 
-        Uri contentUri = FilePickerCustomFileProvider.getUriForFile(activity,
+        Uri contentUri = FilePickerCustomFileProvider.getUriForFile(this,
                 BuildConfig.FILES_AUTHORITY,
                 photoFile);
 
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                 contentUri);
         takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        activity.startActivityForResult(takePictureIntent, REQ_CODE_CAPTURE_IMAGE);
+        this.startActivityForResult(takePictureIntent, REQ_CODE_CAPTURE_IMAGE);
 
         Attach attach = FilePicker.convertFileToAttachment(photoFile);
         attach.setUri(contentUri);
