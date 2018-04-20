@@ -104,15 +104,15 @@ public class Attach implements Parcelable {
     }
 
     public boolean isDocument() {
-        return FilePicker.isDocFile(getExtension(), getType());
+        return FileUtils.isDocFile(getExtension(), getType());
     }
 
     public boolean isImage() {
-        return FilePicker.isImageAttachment(getExtension(), getType());
+        return FileUtils.isImageAttachment(getExtension(), getType());
     }
 
     public boolean isVideo() {
-        return FilePicker.isVideoAttachment(getExtension(), getType());
+        return FileUtils.isVideoAttachment(getExtension(), getType());
     }
 
     @Override
