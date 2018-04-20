@@ -1,5 +1,6 @@
 package com.github.informramiz.sampleapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,8 +9,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.github.informramiz.androidfilepickerlibrary.Attach;
+import com.github.informramiz.androidfilepickerlibrary.FilePicker;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
+    @BindView(R.id.image_view)
+    ImageView imageView;
+    @BindView(R.id.textView_uri)
+    TextView uriTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,36 +32,41 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ButterKnife.bind(this);
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+    @OnClick({R.id.button_camera, R.id.button_gallery, R.id.button_audio, R.id.button_file})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.button_camera:
+                FilePicker.showCameraPickerDialog(this);
+                break;
+            case R.id.button_gallery:
+                FilePicker.openGalleryPicker(this);
+                break;
+            case R.id.button_audio:
+                FilePicker.openAudioPicker(this);
+                break;
+            case R.id.button_file:
+                FilePicker.openDocumentPicker(this);
+                break;
+        }
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
+            return;
         }
 
-        return super.onOptionsItemSelected(item);
+        Attach attach = FilePicker.onActivityResult(requestCode, resultCode, data);
+        uriTextView.setText("Uri: " + attach.getUri().toString());
+        if (attach.isImage()) {
+            imageView.setVisibility(View.VISIBLE);
+            imageView.setImageURI(attach.getUri());
+        } else {
+            imageView.setVisibility(View.GONE);
+        }
     }
 }
