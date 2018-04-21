@@ -61,13 +61,19 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        Attach attach = FilePicker.onActivityResult(requestCode, resultCode, data);
-        uriTextView.setText("Uri: " + attach.getUri().toString());
-        if (attach.isImage()) {
-            imageView.setVisibility(View.VISIBLE);
-            Picasso.get().load(attach.getUri()).into(imageView);
-        } else {
-            imageView.setVisibility(View.GONE);
+        //check if this result of AndroidFilePickerLibrary
+        if (FilePicker.canHandleActivityResult(requestCode)) {
+            //fetch the returned object
+            Attach attach = FilePicker.onActivityResult(requestCode, resultCode, data);
+            //show the UI in a TextView
+            uriTextView.setText("Uri: " + attach.getUri().toString());
+
+            if (attach.isImage()) {
+                imageView.setVisibility(View.VISIBLE);
+                Picasso.get().load(attach.getUri()).into(imageView);
+            } else {
+                imageView.setVisibility(View.GONE);
+            }
         }
     }
 }
