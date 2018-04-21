@@ -9,6 +9,11 @@ As this library uses Android Storage Access Framework (SAF) so it does not need 
 
 In above video and screenshot you can see that app is working fine without storage permissions enabled.
 
+## Download
+```
+implementation 'io.github.informramiz:androidfilepickerlibrary:1.0'
+```
+
 ## Getting Started
 
 Using the library is as simple as writing 1 line of code. 
