@@ -26,6 +26,11 @@ public class Attach implements Parcelable {
         }
     };
 
+    /**
+     * This field is only set if app has storage permissions otherwise
+     * it is always null so your app should not rely on this field and
+     * should only use `uri` field.
+     */
     @Nullable
     private String path;
     private String name;
