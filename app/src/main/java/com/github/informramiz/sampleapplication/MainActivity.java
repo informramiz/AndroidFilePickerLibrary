@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.github.informramiz.androidfilepickerlibrary.Attach;
 import com.github.informramiz.androidfilepickerlibrary.BuildConfig;
@@ -27,6 +28,8 @@ import butterknife.OnClick;
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.image_view)
     ImageView imageView;
+    @BindView(R.id.video_view)
+    VideoView videoView;
     @BindView(R.id.textView_uri)
     TextView uriTextView;
 
@@ -71,13 +74,25 @@ public class MainActivity extends AppCompatActivity {
             //show the UI in a TextView
             uriTextView.setText("Uri: " + attach.getUri().toString());
 
+            imageView.setVisibility(View.GONE);
+            videoView.setVisibility(View.GONE);
+            videoView.stopPlayback();
+
             if (attach.isImage()) {
                 imageView.setVisibility(View.VISIBLE);
                 Picasso.get().load(attach.getUri()).into(imageView);
-            } else {
-                imageView.setVisibility(View.GONE);
+            } else if (attach.isVideo()) {
+                videoView.setVisibility(View.VISIBLE);
+                videoView.setVideoURI(attach.getUri());
+                videoView.start();
             }
         }
         LogUtils.i(MainActivity.class.getSimpleName(), "File provider Authority: " + FilePickerCustomFileProvider.getAuthority());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        videoView.stopPlayback();
     }
 }
