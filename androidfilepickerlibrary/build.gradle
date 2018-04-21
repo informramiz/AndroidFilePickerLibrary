@@ -31,7 +31,6 @@ android {
 
 
     defaultConfig {
-        applicationId
         minSdkVersion 16
         targetSdkVersion 27
         versionCode versionCode
@@ -39,9 +38,9 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        def filesAuthorityValue = applicationId + "com.github.informramiz.androidfilepickerlibrary.fileprovider"
-        manifestPlaceholders = [filesAuthority: filesAuthorityValue]
-        buildConfigField "String", "FILES_AUTHORITY", "\"${filesAuthorityValue}\""
+        def filesAuthoritySuffix = "com.github.informramiz.androidfilepickerlibrary.fileprovider"
+        manifestPlaceholders = [filesAuthoritySuffix: filesAuthoritySuffix]
+        buildConfigField "String", "FILES_AUTHORITY_SUFFIX", "\"${filesAuthoritySuffix}\""
     }
 
     buildTypes {
@@ -52,6 +51,7 @@ android {
     }
 
 }
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])

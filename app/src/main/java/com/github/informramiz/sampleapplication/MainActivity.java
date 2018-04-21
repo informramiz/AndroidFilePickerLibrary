@@ -14,7 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.informramiz.androidfilepickerlibrary.Attach;
+import com.github.informramiz.androidfilepickerlibrary.BuildConfig;
 import com.github.informramiz.androidfilepickerlibrary.FilePicker;
+import com.github.informramiz.androidfilepickerlibrary.FilePickerCustomFileProvider;
+import com.github.informramiz.androidfilepickerlibrary.utils.LogUtils;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -75,5 +78,6 @@ public class MainActivity extends AppCompatActivity {
                 imageView.setVisibility(View.GONE);
             }
         }
+        LogUtils.i(MainActivity.class.getSimpleName(), "File provider Authority: " + FilePickerCustomFileProvider.getAuthority());
     }
 }

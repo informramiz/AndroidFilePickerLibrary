@@ -21,6 +21,7 @@ import android.webkit.MimeTypeMap;
 
 import com.github.informramiz.androidfilepickerlibrary.Attach;
 import com.github.informramiz.androidfilepickerlibrary.BuildConfig;
+import com.github.informramiz.androidfilepickerlibrary.FilePickerCustomFileProvider;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -256,7 +257,7 @@ public class FileUtils {
      * @return Whether the Uri authority is {BuildConfig.FILES_AUTHORITY}.
      */
     public static boolean isLocalStorageDocument(Uri uri) {
-        return BuildConfig.FILES_AUTHORITY.equals(uri.getAuthority());
+        return FilePickerCustomFileProvider.getAuthority().equals(uri.getAuthority());
     }
 
     /**
@@ -611,9 +612,7 @@ public class FileUtils {
     public static void addFileToGallery(@NonNull Activity activity, String filePath) {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         File file = new File(filePath);
-        Uri contentUri = FileProvider.getUriForFile(activity,
-                BuildConfig.FILES_AUTHORITY,
-                file);
+        Uri contentUri = FilePickerCustomFileProvider.getUriForFile(activity, file);
         mediaScanIntent.setData(contentUri);
         mediaScanIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         activity.getApplicationContext().sendBroadcast(mediaScanIntent);

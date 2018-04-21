@@ -5,7 +5,7 @@
         <!--com.github.informramiz.androidfilepickerlibrary.FilePickerCustomFileProvider-->
         <provider
             android:name="com.github.informramiz.androidfilepickerlibrary.FilePickerCustomFileProvider"
-            android:authorities="${filesAuthority}"
+            android:authorities="${applicationId}.${filesAuthoritySuffix}"
             android:exported="false"
             android:grantUriPermissions="true">
                 <meta-data

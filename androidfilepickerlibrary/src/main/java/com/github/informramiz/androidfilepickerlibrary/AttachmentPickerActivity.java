@@ -127,9 +127,7 @@ public class AttachmentPickerActivity extends AppCompatActivity {
             return null;
         }
 
-        Uri contentUri = FilePickerCustomFileProvider.getUriForFile(this,
-                BuildConfig.FILES_AUTHORITY,
-                file);
+        Uri contentUri = FilePickerCustomFileProvider.getUriForFile(this, file);
 
         recordVideoIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         if (!isApiLollipopOrAbove()) {
@@ -164,9 +162,7 @@ public class AttachmentPickerActivity extends AppCompatActivity {
             return null;
         }
 
-        Uri contentUri = FilePickerCustomFileProvider.getUriForFile(this,
-                BuildConfig.FILES_AUTHORITY,
-                photoFile);
+        Uri contentUri = FilePickerCustomFileProvider.getUriForFile(this, photoFile);
 
         takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         if (!isApiLollipopOrAbove()) {
