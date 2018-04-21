@@ -221,7 +221,7 @@ public class AttachmentPickerActivity extends AppCompatActivity {
             FileUtils.addFileToGallery(this, captureFromCameraAttachment.getPath());
             attachment = captureFromCameraAttachment;
         } else if (requestCode == REQ_CODE_CAPTURE_VIDEO) {
-            attachment = extractFileInfo(getApplicationContext(), data);
+            attachment = FilePicker.extractAttachInfoFromUri(getApplicationContext(), data.getData());
         }
         else if (requestCode == REQ_CODE_SELECT_ATTACHMENT
                 || requestCode == REQ_CODE_SELECT_ATTACHMENT_FOR_API_BELOW_21) {
