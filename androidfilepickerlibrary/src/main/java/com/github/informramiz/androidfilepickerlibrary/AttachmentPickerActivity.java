@@ -1,6 +1,5 @@
 package com.github.informramiz.androidfilepickerlibrary;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,7 +11,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -107,44 +105,19 @@ public class AttachmentPickerActivity extends AppCompatActivity {
     private void handleCameraAttachment() {
         int captureType = getIntent().getIntExtra(EXTRA_CAPTURE_TYPE, CAPTURE_TYPE_IMAGE);
         if (captureType == CAPTURE_TYPE_VIDEO) {
-            captureFromCameraAttachment = launchCameraVideoIntent();
+            launchCameraVideoIntent();
         } else {
             captureFromCameraAttachment = launchCameraImageIntent();
         }
     }
 
-    private Attach launchCameraVideoIntent() {
+    private void launchCameraVideoIntent() {
         Intent recordVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        if (recordVideoIntent.resolveActivity(this.getPackageManager()) == null) {
+        if (recordVideoIntent.resolveActivity(this.getPackageManager()) != null) {
+            this.startActivityForResult(recordVideoIntent, REQ_CODE_CAPTURE_VIDEO);
+        } else {
             CommonUtils.showFeatureNotSupportedToast(this);
-            return null;
         }
-
-        File file = FileUtils.createVideoFile(this);
-        // Continue only if the File was successfully created
-        if (file == null) {
-            CommonUtils.showMessageSafe(this, R.string.error_msg_file_creation_failed);
-            return null;
-        }
-
-        Uri contentUri = FilePickerCustomFileProvider.getUriForFile(this, file);
-
-        recordVideoIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        if (!isApiLollipopOrAbove()) {
-            //there are some issues on Pre-Lollipop devices with granting uri permissions
-            //so we have to use following method
-            List<ResolveInfo> resolveInfoList = getPackageManager().queryIntentActivities(recordVideoIntent, PackageManager.MATCH_DEFAULT_ONLY);
-            for (ResolveInfo resolveInfo : resolveInfoList) {
-                grantUriPermission(resolveInfo.activityInfo.packageName, contentUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            }
-        }
-        recordVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                contentUri);
-        this.startActivityForResult(recordVideoIntent, REQ_CODE_CAPTURE_VIDEO);
-
-        Attach attach = FilePicker.convertFileToAttachment(file);
-        attach.setUri(contentUri);
-        return attach;
     }
 
     @Nullable
@@ -243,14 +216,16 @@ public class AttachmentPickerActivity extends AppCompatActivity {
         }
 
         Attach attachment = null;
-        if (requestCode == REQ_CODE_CAPTURE_IMAGE
-                || requestCode == REQ_CODE_CAPTURE_VIDEO) {
+        if (requestCode == REQ_CODE_CAPTURE_IMAGE) {
             //in this case we already have the attachment path and so attachment object
             FileUtils.addFileToGallery(this, captureFromCameraAttachment.getPath());
             attachment = captureFromCameraAttachment;
-        } else if (requestCode == REQ_CODE_SELECT_ATTACHMENT
+        } else if (requestCode == REQ_CODE_CAPTURE_VIDEO) {
+            attachment = extractFileInfo(getApplicationContext(), data);
+        }
+        else if (requestCode == REQ_CODE_SELECT_ATTACHMENT
                 || requestCode == REQ_CODE_SELECT_ATTACHMENT_FOR_API_BELOW_21) {
-            attachment = onNativeFilePickerActivityResult(getApplicationContext(), data);
+            attachment = extractFileInfo(getApplicationContext(), data);
         } else if (requestCode == REQ_CODE_SELECT_ATTACHMENT_BY_LIBRARY) {
             attachment = onFilePickerLibraryActivityResult(data);
         }
@@ -260,8 +235,8 @@ public class AttachmentPickerActivity extends AppCompatActivity {
         finish();
     }
 
-    private Attach onNativeFilePickerActivityResult(Context context,
-                                                    Intent data) {
+    private Attach extractFileInfo(Context context,
+                                   Intent data) {
         Uri uri = data.getData();
         if (isApiLollipopOrAbove()) {
             takePersistablePermissions(context, data, uri);
@@ -279,8 +254,7 @@ public class AttachmentPickerActivity extends AppCompatActivity {
         ArrayList<String> paths = data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS);
         //we only allow 1 file selection at the same time
         String path = paths.get(0);
-        Attach attach = FilePicker.convertFileToAttachment(path);
-        return attach;
+        return FilePicker.convertFileToAttachment(path);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
