@@ -11,7 +11,7 @@ In above video and screenshot you can see that app is working fine without stora
 
 ## Download
 ```
-implementation 'io.github.informramiz:androidfilepickerlibrary:1.0'
+implementation 'io.github.informramiz:androidfilepickerlibrary:1.2'
 ```
 
 ## Getting Started
@@ -84,3 +84,4 @@ public class Attach implements Parcelable {
 
 - [https://github.com/DroidNinja/Android-FilePicker](https://github.com/DroidNinja/Android-FilePicker)
 
+- [https://medium.com/@andretietz/auto-initialize-your-android-library-2349daf06920](https://medium.com/@andretietz/auto-initialize-your-android-library-2349daf06920)
