@@ -239,8 +239,10 @@ public class FilePicker {
                 attach.setName(name);
 
                 String mimeType = cursor.getString(cursor.getColumnIndex("mime_type"));
-//                String mimeType = context.getContentResolver().getType(uri);
-                attach.setType(FileUtils.getMainFileType(mimeType));
+                if (mimeType == null) {
+                    mimeType = context.getContentResolver().getType(uri);
+                }
+                attach.setType(mimeType);
 
                 String extension = FileUtils.getExtensionFromMimeType(mimeType);
                 attach.setExtension(extension);
