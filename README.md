@@ -83,5 +83,5 @@ public class Attach implements Parcelable {
 ## References
 
 - [https://github.com/DroidNinja/Android-FilePicker](https://github.com/DroidNinja/Android-FilePicker)
-
 - [https://medium.com/@andretietz/auto-initialize-your-android-library-2349daf06920](https://medium.com/@andretietz/auto-initialize-your-android-library-2349daf06920)
+- [https://commonsware.com/blog/2017/06/27/fileprovider-libraries.html](https://commonsware.com/blog/2017/06/27/fileprovider-libraries.html)
