@@ -11,7 +11,7 @@ In above video and screenshot you can see that app is working fine without stora
 
 ## Download
 ```
-implementation 'io.github.informramiz:androidfilepickerlibrary:1.4'
+implementation 'io.github.informramiz:androidfilepickerlibrary:1.5'
 ```
 
 ## Getting Started
