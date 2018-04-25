@@ -1,5 +1,6 @@
 package com.github.informramiz.androidfilepickerlibrary.utils;
 
+import android.support.annotation.RestrictTo;
 import android.util.Log;
 
 import com.github.informramiz.androidfilepickerlibrary.BuildConfig;
@@ -7,6 +8,7 @@ import com.github.informramiz.androidfilepickerlibrary.BuildConfig;
 /**
  * Created by ramiz on 20/04/2018
  */
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 public class LogUtils {
 
     public static void v(String tag, String msg) {

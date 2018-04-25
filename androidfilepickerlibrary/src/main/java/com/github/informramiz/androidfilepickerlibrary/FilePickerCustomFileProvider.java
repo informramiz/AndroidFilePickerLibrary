@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.ProviderInfo;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.RestrictTo;
 import android.support.v4.content.FileProvider;
 
 import java.io.File;
@@ -11,6 +12,7 @@ import java.io.File;
 /**
  * Created by ramiz on 20/04/2018
  */
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 public class FilePickerCustomFileProvider extends FileProvider {
     @NonNull
     private static ProviderInfo providerInfo;
