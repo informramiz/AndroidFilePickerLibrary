@@ -89,7 +89,7 @@ public class FileInfo implements Parcelable {
         this.uri = uri.toString();
     }
 
-    public boolean isAttachmentValid() {
+    public boolean isFileValid() {
         return getPath() != null || getUri() != null;
     }
 
