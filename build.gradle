@@ -3,7 +3,7 @@
 buildscript {
     ext.versionName = "1.2"
     ext.versionCode = 3
-    ext.supportLibsVersion = "27.1.0"
+    ext.supportLibsVersion = "27.1.1"
     repositories {
         google()
         jcenter()
