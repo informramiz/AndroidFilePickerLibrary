@@ -52,9 +52,9 @@ public class MainActivity extends AppCompatActivity {
         //check if this result of AndroidFilePickerLibrary
         if (FilePicker.canHandleActivityResult(requestCode)) {
             //fetch the returned object
-            Attach attach = FilePicker.onActivityResult(requestCode, resultCode, data);
+            FileInfo fileInfo = FilePicker.onActivityResult(requestCode, resultCode, data);
             //show the UI in a TextView
-            uriTextView.setText("Uri: " + attach.getUri().toString());
+            uriTextView.setText("Uri: " + fileInfo.getUri().toString());
         }
     }
 }
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 The Library returns picked file/image info in the form of following object.
 
 ```
-public class Attach implements Parcelable {
+public class FileInfo implements Parcelable {
     private String name;
     //mime type of file
     private String type;

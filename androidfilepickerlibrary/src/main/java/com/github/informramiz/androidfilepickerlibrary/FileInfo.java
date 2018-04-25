@@ -12,17 +12,17 @@ import java.util.Locale;
 /**
  * * Created by ramiz on 20/04/2018
  */
-public class Attach implements Parcelable {
+public class FileInfo implements Parcelable {
 
-    public static final Creator<Attach> CREATOR = new Creator<Attach>() {
+    public static final Creator<FileInfo> CREATOR = new Creator<FileInfo>() {
         @Override
-        public Attach createFromParcel(Parcel in) {
-            return new Attach(in);
+        public FileInfo createFromParcel(Parcel in) {
+            return new FileInfo(in);
         }
 
         @Override
-        public Attach[] newArray(int size) {
-            return new Attach[size];
+        public FileInfo[] newArray(int size) {
+            return new FileInfo[size];
         }
     };
 
@@ -39,11 +39,11 @@ public class Attach implements Parcelable {
     private Long size;
     private String uri;
 
-    public Attach() {
+    public FileInfo() {
 
     }
 
-    protected Attach(Parcel in) {
+    protected FileInfo(Parcel in) {
         path = in.readString();
         name = in.readString();
         type = in.readString();
@@ -138,7 +138,7 @@ public class Attach implements Parcelable {
 
     @Override
     public String toString() {
-        return String.format(Locale.US, "Attach: {path=%s, uri=%s, name=%s, type=%s, extension=%s, size=%d}",
+        return String.format(Locale.US, "FileInfo: {path=%s, uri=%s, name=%s, type=%s, extension=%s, size=%d}",
                 path, uri, name, type, extension, size);
     }
 }

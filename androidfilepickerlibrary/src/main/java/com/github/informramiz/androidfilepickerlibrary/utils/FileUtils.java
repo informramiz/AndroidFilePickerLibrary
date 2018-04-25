@@ -15,12 +15,10 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.content.FileProvider;
 import android.util.Base64;
 import android.webkit.MimeTypeMap;
 
-import com.github.informramiz.androidfilepickerlibrary.Attach;
-import com.github.informramiz.androidfilepickerlibrary.BuildConfig;
+import com.github.informramiz.androidfilepickerlibrary.FileInfo;
 import com.github.informramiz.androidfilepickerlibrary.FilePickerCustomFileProvider;
 
 import org.apache.commons.io.FilenameUtils;
@@ -482,16 +480,16 @@ public class FileUtils {
         return FilenameUtils.isExtension(fileName, DOC_FILE_EXTENTSIONS);
     }
 
-    public static boolean isDocFile(@NonNull Attach attach) {
-        return isDocFile(attach.getName());
+    public static boolean isDocFile(@NonNull FileInfo fileInfo) {
+        return isDocFile(fileInfo.getName());
     }
 
     public static boolean isAudioFile(@NonNull String fileName) {
         return FilenameUtils.isExtension(fileName, AUDIO_FILE_EXTENTSIONS);
     }
 
-    public static boolean isAudioFile(@NonNull Attach attach) {
-        return isAudioFile(attach.getName()) || attach.getType().contains("audio");
+    public static boolean isAudioFile(@NonNull FileInfo fileInfo) {
+        return isAudioFile(fileInfo.getName()) || fileInfo.getType().contains("audio");
     }
 
     public static boolean isImageAttachment(@NonNull String extension, @Nullable String mimeType) {

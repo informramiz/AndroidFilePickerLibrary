@@ -66,7 +66,7 @@ public class AttachmentPickerActivity extends AppCompatActivity {
     public static final int REQ_CODE_SELECT_ATTACHMENT_FOR_API_BELOW_21 = 5;
     public static final int REQ_CODE_SELECT_ATTACHMENT_BY_LIBRARY = 6;
 
-    private Attach captureFromCameraAttachment;
+    private FileInfo captureFromCameraAttachment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +121,7 @@ public class AttachmentPickerActivity extends AppCompatActivity {
     }
 
     @Nullable
-    private Attach launchCameraImageIntent() {
+    private FileInfo launchCameraImageIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(this.getPackageManager()) == null) {
             CommonUtils.showFeatureNotSupportedToast(this);
@@ -150,9 +150,9 @@ public class AttachmentPickerActivity extends AppCompatActivity {
                 contentUri);
         this.startActivityForResult(takePictureIntent, REQ_CODE_CAPTURE_IMAGE);
 
-        Attach attach = FilePicker.convertFileToAttachment(photoFile);
-        attach.setUri(contentUri);
-        return attach;
+        FileInfo fileInfo = FilePicker.convertFileToAttachment(photoFile);
+        fileInfo.setUri(contentUri);
+        return fileInfo;
     }
 
     private void handleAudioAttachment() {
@@ -215,7 +215,7 @@ public class AttachmentPickerActivity extends AppCompatActivity {
             return;
         }
 
-        Attach attachment = null;
+        FileInfo attachment = null;
         if (requestCode == REQ_CODE_CAPTURE_IMAGE) {
             //in this case we already have the attachment path and so attachment object
             FileUtils.addFileToGallery(this, captureFromCameraAttachment.getPath());
@@ -235,8 +235,8 @@ public class AttachmentPickerActivity extends AppCompatActivity {
         finish();
     }
 
-    private Attach extractFileInfo(Context context,
-                                   Intent data) {
+    private FileInfo extractFileInfo(Context context,
+                                     Intent data) {
         Uri uri = data.getData();
         if (isApiLollipopOrAbove()) {
             takePersistablePermissions(context, data, uri);
@@ -244,13 +244,13 @@ public class AttachmentPickerActivity extends AppCompatActivity {
         LogUtils.i(TAG, "Uri received from File picker: " + uri.toString());
         LogUtils.i(TAG, "Path received from File picker: " + uri.getPath());
 
-        Attach attach = FilePicker.extractAttachInfoFromUri(context, uri);
-        LogUtils.i(TAG, attach.toString());
+        FileInfo fileInfo = FilePicker.extractAttachInfoFromUri(context, uri);
+        LogUtils.i(TAG, fileInfo.toString());
 
-        return attach;
+        return fileInfo;
     }
 
-    private Attach onFilePickerLibraryActivityResult(Intent data) {
+    private FileInfo onFilePickerLibraryActivityResult(Intent data) {
         ArrayList<String> paths = data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS);
         //we only allow 1 file selection at the same time
         String path = paths.get(0);

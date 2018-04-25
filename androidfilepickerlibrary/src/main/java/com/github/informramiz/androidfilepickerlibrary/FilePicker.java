@@ -34,12 +34,12 @@ public class FilePicker {
     public static final int REQ_CODE_PICK_DOC = 6;
 
 
-    public static Attach convertFileToAttachment(String filePath) {
+    public static FileInfo convertFileToAttachment(String filePath) {
         return convertFileToAttachment(new File(filePath));
     }
 
-    public static Attach convertFileToAttachment(File file) {
-        Attach attachment = new Attach();
+    public static FileInfo convertFileToAttachment(File file) {
+        FileInfo attachment = new FileInfo();
         attachment.setExtension(FilenameUtils.getExtension(file.getAbsolutePath()));
         attachment.setName(file.getName());
         attachment.setPath(file.getPath());
@@ -194,12 +194,12 @@ public class FilePicker {
         openAudioPicker(fragment.getActivity(), fragment);
     }
 
-    public static Attach onActivityResult(int requestCode, int resultCode, Intent data) {
+    public static FileInfo onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK) {
             return null;
         }
 
-        Attach attachment = null;
+        FileInfo attachment = null;
         if (requestCode == REQ_CODE_CAPTURE_IMAGE
                 || requestCode == REQ_CODE_CAPTURE_VIDEO
                 || requestCode == REQ_CODE_PICK_GALLERY
@@ -224,37 +224,37 @@ public class FilePicker {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    public static Attach extractAttachInfoFromUri(Context context, Uri uri) {
+    public static FileInfo extractAttachInfoFromUri(Context context, Uri uri) {
         Cursor cursor = context.getContentResolver().query(uri, null, null, null
                 , null, null);
 
-        Attach attach = new Attach();
+        FileInfo fileInfo = new FileInfo();
         if (PermissionUtils.checkStoragePermissions(context)) {
-            attach.setPath(FileUtils.getPath(context, uri));
+            fileInfo.setPath(FileUtils.getPath(context, uri));
         }
-        attach.setUri(uri);
+        fileInfo.setUri(uri);
         try {
             if (cursor != null && cursor.moveToFirst()) {
                 String name = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-                attach.setName(name);
+                fileInfo.setName(name);
 
                 String mimeType = cursor.getString(cursor.getColumnIndex("mime_type"));
                 if (mimeType == null) {
                     mimeType = context.getContentResolver().getType(uri);
                 }
-                attach.setType(mimeType);
+                fileInfo.setType(mimeType);
 
                 String extension = FileUtils.getExtensionFromMimeType(mimeType);
-                attach.setExtension(extension);
+                fileInfo.setExtension(extension);
 
                 int sizeColIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
                 Long size = null;
                 if (!cursor.isNull(sizeColIndex)) {
                     size = (long) cursor.getInt(sizeColIndex);
                 }
-                attach.setSize(size);
-            } else if (attach.getPath() != null) {
-                attach = FilePicker.convertFileToAttachment(attach.getPath());
+                fileInfo.setSize(size);
+            } else if (fileInfo.getPath() != null) {
+                fileInfo = FilePicker.convertFileToAttachment(fileInfo.getPath());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -264,6 +264,6 @@ public class FilePicker {
             }
         }
 
-        return attach;
+        return fileInfo;
     }
 }

@@ -2,20 +2,14 @@ package com.github.informramiz.sampleapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-import com.github.informramiz.androidfilepickerlibrary.Attach;
-import com.github.informramiz.androidfilepickerlibrary.BuildConfig;
+import com.github.informramiz.androidfilepickerlibrary.FileInfo;
 import com.github.informramiz.androidfilepickerlibrary.FilePicker;
 import com.github.informramiz.androidfilepickerlibrary.FilePickerCustomFileProvider;
 import com.github.informramiz.androidfilepickerlibrary.utils.LogUtils;
@@ -70,20 +64,20 @@ public class MainActivity extends AppCompatActivity {
         //check if this result of AndroidFilePickerLibrary
         if (FilePicker.canHandleActivityResult(requestCode)) {
             //fetch the returned object
-            Attach attach = FilePicker.onActivityResult(requestCode, resultCode, data);
+            FileInfo fileInfo = FilePicker.onActivityResult(requestCode, resultCode, data);
             //show the UI in a TextView
-            uriTextView.setText("Uri: " + attach.getUri().toString());
+            uriTextView.setText("Uri: " + fileInfo.getUri().toString());
 
             imageView.setVisibility(View.GONE);
             videoView.setVisibility(View.GONE);
             videoView.stopPlayback();
 
-            if (attach.isImage()) {
+            if (fileInfo.isImage()) {
                 imageView.setVisibility(View.VISIBLE);
-                Picasso.get().load(attach.getUri()).into(imageView);
-            } else if (attach.isVideo()) {
+                Picasso.get().load(fileInfo.getUri()).into(imageView);
+            } else if (fileInfo.isVideo()) {
                 videoView.setVisibility(View.VISIBLE);
-                videoView.setVideoURI(attach.getUri());
+                videoView.setVideoURI(fileInfo.getUri());
                 videoView.start();
             }
         }
