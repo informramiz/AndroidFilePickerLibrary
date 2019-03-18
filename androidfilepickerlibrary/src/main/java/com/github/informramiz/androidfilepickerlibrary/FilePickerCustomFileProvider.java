@@ -3,9 +3,9 @@ package com.github.informramiz.androidfilepickerlibrary;
 import android.content.Context;
 import android.content.pm.ProviderInfo;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.RestrictTo;
-import android.support.v4.content.FileProvider;
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+import androidx.core.content.FileProvider;
 
 import java.io.File;
 

@@ -1,6 +1,6 @@
 package com.github.informramiz.androidfilepickerlibrary.utils;
 
-import android.support.annotation.RestrictTo;
+import androidx.annotation.RestrictTo;
 import android.util.Log;
 
 import com.github.informramiz.androidfilepickerlibrary.BuildConfig;
