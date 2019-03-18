@@ -3,7 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AndroidFilePickerLibrary.iml" filepath="$PROJECT_DIR$/AndroidFilePickerLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AndroidFilePickerLibrary.iml" filepath="$PROJECT_DIR$/AndroidFilePickerLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/androidfilepickerlibrary/androidfilepickerlibrary.iml" filepath="$PROJECT_DIR$/androidfilepickerlibrary/androidfilepickerlibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/androidfilepickerlibrary/androidfilepickerlibrary.iml" filepath="$PROJECT_DIR$/androidfilepickerlibrary/androidfilepickerlibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
