@@ -3,7 +3,9 @@
  
 ## Why use this library?
  
-As this library uses Android Storage Access Framework (SAF) so it does not need any storage access run time permissions (READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STOARAGE). You only have to integrate it into your app and don't have to worry about any permissions. **Library returns a `Uri` back to the calling app and that Uri has persistable read and write permissions so calling app can access that file for as long as its wants without worrying about any runtime storage permission.** 
+As this library uses Android Storage Access Framework (SAF) so it does not need any storage access run time permissions (READ\_EXTERNAL\_STORAGE, WRITE\_EXTERNAL\_STOARAGE). You only have to integrate it into your app and don't have to worry about any permissions. 
+
+Library returns a `Uri` back to the calling app and that Uri has persistable read and write permissions so calling app can access that file for as long as its wants without worrying about any runtime storage permission.
  
 ![animation](docs-data/video.gif)    ![permissions-screenshot](docs-data/permissions-screenshot.png)
 
@@ -11,10 +13,22 @@ In above video and screenshot you can see that app is working fine without stora
 
 ## Download
 ```
-implementation 'io.github.informramiz:androidfilepickerlibrary:1.6'
+implementation 'io.github.informramiz:androidfilepickerlibrary:1.7'
 ```
 
 ## Getting Started
+
+First of all, make sure to enable **Java8** comptability by adding following lines to your **android** gradle block in your module (not project) level gradle file.
+
+```
+android {
+	
+	compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+```
 
 Using the library is as simple as writing 1 line of code. 
 
@@ -80,8 +94,14 @@ public class FileInfo implements Parcelable {
 }
 ```
 
+## Releases
+- 1.7
+	- Change minSdkVersion to 21
+	- Migrate to AndroidX.*
+	- Remove unnecessary library dependencies
+
+
 ## References
 
-- [https://github.com/DroidNinja/Android-FilePicker](https://github.com/DroidNinja/Android-FilePicker)
 - [https://medium.com/@andretietz/auto-initialize-your-android-library-2349daf06920](https://medium.com/@andretietz/auto-initialize-your-android-library-2349daf06920)
 - [https://commonsware.com/blog/2017/06/27/fileprovider-libraries.html](https://commonsware.com/blog/2017/06/27/fileprovider-libraries.html)
