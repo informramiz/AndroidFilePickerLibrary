@@ -28,7 +28,10 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation project(':androidfilepickerlibrary')
-    implementation 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    //butrerknife librar
+    def butter_knife_verion = "10.1.0"
+    implementation "com.jakewharton:butterknife:${butter_knife_verion}"
+    annotationProcessor "com.jakewharton:butterknife-compiler:${butter_knife_verion}"
     implementation 'com.squareup.picasso:picasso:2.71828'
 }
